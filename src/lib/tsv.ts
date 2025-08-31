@@ -1,5 +1,5 @@
 import { tsvParse } from 'd3-dsv';
-import { getRepoBaseUrl } from './hf';
+import { getLibraryBaseUrl, type LibrarySlug } from './utils';
 
 type RawRow = {
   category: string;
@@ -28,19 +28,17 @@ const parseNumber = (value: string) => {
   return isNaN(number) ? null : number;
 };
 
-export const parseTsvData = (tsvText: string, librarySlug: string) => {
-  const baseUrl = getRepoBaseUrl(librarySlug);
-  return tsvParse(tsvText, (row: RawRow) => {
-    return {
-      category: row.category,
-      author: row.author,
-      title: row.title,
-      pages: parseNumber(row.pages),
-      volumes: parseNumber(row.volumes),
-      pdfPaths: parseJsonPaths(row.pdf_paths, baseUrl),
-      txtPaths: parseJsonPaths(row.txt_paths, baseUrl),
-      docxPaths: parseJsonPaths(row.docx_paths, baseUrl),
-      library: librarySlug,
-    };
-  });
+export const parseLibraryTsv = (tsvText: string, librarySlug: LibrarySlug) => {
+  const baseUrl = getLibraryBaseUrl(librarySlug);
+  return tsvParse(tsvText, (row: RawRow) => ({
+    category: row.category,
+    author: row.author,
+    title: row.title,
+    pages: parseNumber(row.pages),
+    volumes: parseNumber(row.volumes),
+    pdfUrls: parseJsonPaths(row.pdf_paths, baseUrl),
+    txtUrl: parseJsonPaths(row.txt_paths, baseUrl),
+    docxUrls: parseJsonPaths(row.docx_paths, baseUrl),
+    library: librarySlug,
+  }));
 };
