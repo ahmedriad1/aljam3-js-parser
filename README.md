@@ -4,6 +4,12 @@ This project fetches and parses the data from [aljam3's](https://aljam3.com) dat
 
 Note: this project uses Bun, but you can use your preferred package manager and runtime.
 
+- [Setup](#setup)
+- [Usage](#usage)
+  - [Fetching all books from a library](#fetching-all-books-from-a-library)
+  - [Parsing the txt file of a book](#parsing-the-txt-file-of-a-book)
+- [Benchmarks](#benchmarks)
+
 ## Setup
 
 To install dependencies:
@@ -20,7 +26,8 @@ bun run src/index.ts
 
 ## Usage
 
-- To fetch the books of a library, run:
+### Fetching all books from a library
+
 ```ts
 import { fetchLibraryBooks } from './lib/aljam3';
 
@@ -42,7 +49,8 @@ const books = await fetchLibraryBooks('waqfeya-library');
  */
 ```
 
-- To parse the txt file of a book, run:
+### Parsing the txt file of a book
+
 ```ts
 import { fetchPagesFromTxt } from './lib/aljam3';
 
