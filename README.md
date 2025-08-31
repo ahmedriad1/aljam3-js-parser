@@ -67,14 +67,14 @@ const pages = await fetchPagesFromTxt(book.txtUrls[0]!);
 
 ## Benchmarks
 
-- Fetching all books from all libraries (cached):
+Fetching all books from all libraries (cached):
 ```bash
 $ bun run src/index.ts
 Parsed files in: 205ms
 Total books: 63535
 ```
 
-- Fetching all books from all libraries (not cached):
+Fetching all books from all libraries (not cached):
 ```bash
 $ bun run src/index.ts
 Parsed files in: 4239ms
