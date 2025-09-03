@@ -1,5 +1,6 @@
 import { tsvParse } from 'd3-dsv';
 import { getLibraryBaseUrl, type LibrarySlug } from './utils';
+import categories from '../../data/categories.json';
 
 type RawRow = {
   category: string;
@@ -28,17 +29,24 @@ const parseNumber = (value: string) => {
   return isNaN(number) ? null : number;
 };
 
+const categoryNameToId = {
+  ...categories.reduce((acc, category) => {
+    acc[category.name] = category.id;
+    return acc;
+  }, {} as Record<string, number>),
+} as Record<string, number>;
+
 export const parseLibraryTsv = (tsvText: string, librarySlug: LibrarySlug) => {
   const baseUrl = getLibraryBaseUrl(librarySlug);
   return tsvParse(tsvText, (row: RawRow) => ({
-    category: row.category,
+    categoryId: categoryNameToId[row.category]!,
     author: row.author,
     title: row.title,
-    pages: parseNumber(row.pages),
+    pages: parseNumber(row.pages)!,
     volumes: parseNumber(row.volumes),
     pdfUrls: parseJsonPaths(row.pdf_paths, baseUrl),
-    txtUrl: parseJsonPaths(row.txt_paths, baseUrl),
+    txtUrls: parseJsonPaths(row.txt_paths, baseUrl),
     docxUrls: parseJsonPaths(row.docx_paths, baseUrl),
     library: librarySlug,
-  }));
+  })).filter(book => book.title !== '' && book.pages !== null && book.pages > 0);
 };

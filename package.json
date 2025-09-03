@@ -5,12 +5,14 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/d3-dsv": "^3.0.7"
+    "@types/d3-dsv": "^3.0.7",
+    "@types/cheerio": "^1.0.0"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "cheerio": "^1.1.2",
     "d3-dsv": "^3.0.1"
   }
 }
