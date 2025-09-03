@@ -32,6 +32,9 @@ const parseNumber = (value: string) => {
 const categoryNameToId = {
   ...categories.reduce((acc, category) => {
     acc[category.name] = category.id;
+    category.extraNames.forEach(name => {
+      acc[name] = category.id;
+    });
     return acc;
   }, {} as Record<string, number>),
 } as Record<string, number>;

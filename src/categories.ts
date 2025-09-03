@@ -3,7 +3,7 @@
  */
 import { load } from 'cheerio';
 
-const categories: { id: number; name: string }[] = [];
+const categories: { id: number; name: string; extraNames: string[] }[] = [];
 
 console.log('Fetching categories...');
 const html = await (await fetch('https://aljam3.com/categories')).text();
@@ -18,6 +18,7 @@ $('body > div.px-4.sm\\:px-4.py-4.sm\\:container > a').each((_, el) => {
   categories.push({
     id: Number(href.split('/').pop()!.trim()),
     name: text.split('.')[1]!.trim(),
+    extraNames: [],
   });
 });
 
@@ -141,9 +142,13 @@ const extraMappings = [
   },
 ];
 
-Bun.write(
-  'data/categories.json',
-  JSON.stringify(categories.concat(extraMappings), null, 2),
-);
+extraMappings.forEach(mapping => {
+  const category = categories.find(category => category.id === mapping.id);
+  if (category) {
+    category.extraNames.push(mapping.name);
+  }
+});
+
+Bun.write('data/categories.json', JSON.stringify(categories, null, 2));
 
 console.log(`Done! Total categories: ${categories.length}`);
